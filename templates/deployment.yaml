@@ -23,9 +23,12 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: PORT
+              value: {{ .Values.service.port | quote }}
           ports:
             - name: http
-              containerPort: 80
+              containerPort: {{ .Values.service.port }}
               protocol: TCP
           livenessProbe:
             httpGet:
@@ -35,8 +38,19 @@ spec:
             httpGet:
               path: /
               port: http
+          volumeMounts:
+          - name: thelounge-data
+            mountPath: /var/opt/thelounge
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+      - name: thelounge-data
+      {{- if .Values.persistence.enabled }}
+        persistentVolumeClaim:
+          claimName: {{ template "thelounge.fullname" . }}
+      {{- else }}
+        emptyDir: {}
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
