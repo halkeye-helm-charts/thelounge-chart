@@ -23,6 +23,11 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - "-c"
+            - "reverseProxy={{ .Values.thelounge.reverseProxy }}"
+            - "-c"
+            - "public={{ .Values.thelounge.public }}"
           env:
             - name: PORT
               value: {{ .Values.service.port | quote }}

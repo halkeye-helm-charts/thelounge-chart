@@ -16,6 +16,10 @@ service:
   type: ClusterIP
   port: 9000
 
+thelounge:
+  public: false
+  reverseProxy: true
+
 ingress:
   enabled: false
   annotations: {}
