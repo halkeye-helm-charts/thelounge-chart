@@ -30,7 +30,7 @@ spec:
             - "public={{ .Values.thelounge.public }}"
           env:
             - name: PORT
-              value: 9000
+              value: "9000"
           ports:
             - name: http
               containerPort: 9000
