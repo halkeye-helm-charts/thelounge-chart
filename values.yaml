@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: thelounge/thelounge
-  tag: 3.0.1-alpine
+  tag: "{{ .Chart.AppVersion }}"
   pullPolicy: IfNotPresent
 
 nameOverride: ""
@@ -62,5 +62,5 @@ persistence:
   ##
   storageClassName: ""
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   size: 1Gi

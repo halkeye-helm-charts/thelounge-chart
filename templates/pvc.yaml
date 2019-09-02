@@ -4,10 +4,10 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ template "thelounge.fullname" . }}
   labels:
-    app: {{ template "thelounge.name" . }}
-    chart: {{ template "thelounge.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    app.kubernetes.io/name: {{ include "thelounge.name" . }}
+    helm.sh/chart: {{ include "thelounge.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
   {{- with .Values.persistence.annotations  }}
   annotations:
 {{ toYaml . | indent 4 }}
