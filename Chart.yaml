@@ -1,8 +1,8 @@
 apiVersion: v1
-appVersion: "3.2.0-alpine"
+appVersion: "3.3.0-alpine"
 description: Modern web IRC client designed for self-hosting
 name: thelounge
-version: 3.2.0
+version: 3.3.0
 keywords:
   - thelounge
   - irc
