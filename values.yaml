@@ -19,6 +19,16 @@ service:
 thelounge:
   public: false
   reverseProxy: true
+  maxHistory: 10000
+  theme: "default"
+  prefetch: false
+  prefetchStorage: false
+  prefetchMaxImageSize: 2048
+  fileUpload:
+    enable: false
+    maxFileSize: 10240
+    baseUrl: null
+  leaveMessage: "The Lounge - https://thelounge.chat"
 
 ingress:
   enabled: false

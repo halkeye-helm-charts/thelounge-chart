@@ -26,6 +26,18 @@ spec:
   {{- end }}
 {{- end }}
   rules:
+  {{- if .Values.ingress.uploadsHost }}
+    - host: {{ .Values.ingress.uploadsHost | quote }}
+      http:
+        paths:
+	{{- range $ingressPaths }}
+          - path: /uploads{{ . }}
+            backend:
+              serviceName: {{ $fullName }}
+              servicePort: http
+	{{- end }}
+  {{- end }}
+
   {{- range .Values.ingress.hosts }}
     - host: {{ . | quote }}
       http:
