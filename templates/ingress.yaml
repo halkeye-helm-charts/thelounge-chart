@@ -30,23 +30,23 @@ spec:
     - host: {{ .Values.ingress.uploadsHost | quote }}
       http:
         paths:
-	{{- range $ingressPaths }}
+  {{- range $ingressPaths }}
           - path: /uploads{{ . }}
             backend:
               serviceName: {{ $fullName }}
               servicePort: http
-	{{- end }}
+  {{- end }}
   {{- end }}
 
   {{- range .Values.ingress.hosts }}
     - host: {{ . | quote }}
       http:
         paths:
-	{{- range $ingressPaths }}
+  {{- range $ingressPaths }}
           - path: {{ . }}
             backend:
               serviceName: {{ $fullName }}
               servicePort: http
-	{{- end }}
+  {{- end }}
   {{- end }}
 {{- end }}
