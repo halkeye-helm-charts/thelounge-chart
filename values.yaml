@@ -74,3 +74,4 @@ persistence:
   accessModes:
     - ReadWriteMany
   size: 1Gi
+  existingClaim: ""
