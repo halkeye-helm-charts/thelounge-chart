@@ -66,6 +66,20 @@ thelounge:
     maxFileSize: 10240
     baseUrl: null
   leaveMessage: "The Lounge - https://thelounge.chat"
+  ldap:
+    enable: false
+    url: "ldap://ldap.example.com"
+    ## This should also work with TheLounge 4.3+ (due to ldapjs 2.2.0+)
+    ## (Will failover to the next url in the list when the current one does not work)
+    #url:
+    #  - "ldap://ldap-1.example.com"
+    #  - "ldaps://ldap-2.example.com"
+    primaryKey: "uid"
+    bindDn: "uid=my-service,ou=ServiceAccount,dc=example,dc=com"
+    bindPassword: "my-password"
+    filter: "(objectClass=person)(memberOf=ou=accounts,dc=example,dc=com)"
+    searchSuffix: "dc=example,dc=com"
+    scope: "sub"
 
 ingress:
   enabled: false
