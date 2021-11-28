@@ -1,14 +1,15 @@
 {{- if and .Values.persistence.enabled (not .Values.persistence.existingClaim) }}
+{{- $persistenceAnnotations := .Values.persistence.annotations }}
+{{- if .Values.persistence.skipuninstall }}
+{{- $persistenceAnnotations = merge $persistenceAnnotations (dict "helm.sh/resource-policy" "keep") }}
+{{- end }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ template "thelounge.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ include "thelounge.name" . }}
-    helm.sh/chart: {{ include "thelounge.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-  {{- with .Values.persistence.annotations  }}
+{{ include "thelounge.labels" . | indent 4 }}
+  {{- with $persistenceAnnotations }}
   annotations:
 {{ toYaml . | indent 4 }}
   {{- end }}

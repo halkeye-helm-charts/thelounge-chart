@@ -30,3 +30,34 @@ Create chart name and version as used by the chart label.
 {{- define "thelounge.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{/*
+Common labels
+*/}}
+{{- define "thelounge.labels" -}}
+helm.sh/chart: {{ include "thelounge.chart" . }}
+{{ include "thelounge.selectorLabels" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end -}}
+
+{{/*
+Selector labels
+*/}}
+{{- define "thelounge.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "thelounge.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end -}}
+
+{{/*
+Create the name of the service account to use
+*/}}
+{{- define "thelounge.serviceAccountName" -}}
+{{- if .Values.serviceAccount.create -}}
+    {{ default (include "thelounge.fullname" .) .Values.serviceAccount.name }}
+{{- else -}}
+    {{ default "default" .Values.serviceAccount.name }}
+{{- end -}}
+{{- end -}}

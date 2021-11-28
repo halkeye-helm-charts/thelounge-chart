@@ -3,17 +3,14 @@ kind: Service
 metadata:
   name: {{ include "thelounge.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ include "thelounge.name" . }}
-    helm.sh/chart: {{ include "thelounge.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{ include "thelounge.labels" . | indent 4 }}
 spec:
   type: {{ .Values.service.type }}
+  externalTrafficPolicy: {{ .Values.service.externalTrafficPolicy }}
   ports:
     - port: {{ .Values.service.port }}
       targetPort: http
       protocol: TCP
       name: http
   selector:
-    app.kubernetes.io/name: {{ include "thelounge.name" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "thelounge.selectorLabels" . | nindent 4 }}

@@ -9,12 +9,49 @@ image:
   tag: "{{ .Chart.AppVersion }}"
   pullPolicy: IfNotPresent
 
+imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+podSecurityContext:
+  {}
+  # fsGroup: 2000
+
+securityContext:
+  {}
+  # privileged: true
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
 service:
+  externalTrafficPolicy:
   type: ClusterIP
   port: 9000
+
+probes:
+  liveness:
+    failureThreshold: 5
+    periodSeconds: 10
+  readiness:
+    failureThreshold: 5
+    periodSeconds: 10
+  startup:
+    initialDelaySeconds: 5
+    failureThreshold: 30
+    periodSeconds: 10
 
 thelounge:
   public: false
@@ -32,10 +69,13 @@ thelounge:
 
 ingress:
   enabled: false
-  annotations: {}
+  ## ingress.ingressClassName -- Support for ingress class name that was introduced in kubernetes 1.19
+  ingressClassName:
+  annotations:
+    {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  paths: 
+  paths:
     - /
   hosts:
     - chart-example.local
@@ -44,7 +84,8 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources: {}
+resources:
+  {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -62,7 +103,13 @@ tolerations: []
 
 affinity: {}
 
+podAnnotations: {}
+
+deploymentAnnotations: {}
+
+## Persist configuration to a persistent volume
 persistence:
+  # persistence.enabled - Should disk persistence be enabled
   enabled: false
   ## If defined, storageClassName: <storageClass>
   ## If set to "-", storageClassName: "", which disables dynamic provisioning
@@ -70,8 +117,10 @@ persistence:
   ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
   ##   GKE, AWS & OpenStack)
   ##
+  existingClaim: ""
   storageClassName: ""
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   size: 1Gi
-  existingClaim: ""
+  ## persistence.skipuninstall -- Do not delete the pvc upon helm uninstall
+  skipuninstall: false

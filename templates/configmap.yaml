@@ -3,10 +3,7 @@ kind: ConfigMap
 metadata:
   name: {{ template "thelounge.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ include "thelounge.name" . }}
-    helm.sh/chart: {{ include "thelounge.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{ include "thelounge.labels" . | indent 4 }}
 data:
   config.js: |
     "use strict";
